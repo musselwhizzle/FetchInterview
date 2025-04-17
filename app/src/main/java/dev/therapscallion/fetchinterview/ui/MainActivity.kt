@@ -1,14 +1,15 @@
 package dev.therapscallion.fetchinterview.ui
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import dev.therapscallion.fetchinterview.R
 import dev.therapscallion.fetchinterview.databinding.ActivityMainBinding
+import dev.therapscallion.fetchinterview.network.Result
 import dev.therapscallion.fetchinterview.storage.SqlSort
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -18,7 +19,6 @@ class MainActivity : AppCompatActivity() {
     private val viewModel: HiringViewModel by viewModels()
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: HiringListAdapter
-    private var listJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,35 +29,43 @@ class MainActivity : AppCompatActivity() {
         adapter = HiringListAdapter()
         binding.recyclerView.adapter = adapter
         viewModel.consumeHiringList()
-        bindList()
 
-        binding.listIdBtn.setOnClickListener {
-            bindList(
-                listIdSort = viewModel.listIdSortOrder.inverse(),
-            )
-        }
-        binding.nameBtn.setOnClickListener {
-            bindList(
-                nameSort = viewModel.nameSortOrder.inverse(),
-            )
-        }
-    }
-
-    private fun bindList(
-        listIdSort: SqlSort? = null,
-        nameSort: SqlSort? = null
-    ) {
-        listJob?.cancel()
-        binding.recyclerView.scrollToPosition(0)
-        listJob = lifecycleScope.launch {
-            viewModel.getHiringFlow(
-                listIdSort,
-                nameSort
-            ).collectLatest {
-                adapter.source = it
+        lifecycleScope.launch {
+            viewModel.results.collectLatest {
+                when (it) {
+                    is Result.Success -> {
+                        binding.recyclerView.scrollToPosition(0)
+                        adapter.source = it.data
+                    }
+                    is Result.Error -> {
+                        adapter.source = emptyList()
+                        Toast.makeText(this@MainActivity,
+                            "Error Loading Data",
+                            Toast.LENGTH_SHORT).show()
+                    }
+                    null -> {
+                        adapter.source = emptyList()
+                    }
+                }
             }
         }
 
+        bindArrows()
+        binding.listIdBtn.setOnClickListener {
+            viewModel.updateSortOrder(
+                listIdSort = viewModel.listIdSortOrder.inverse()
+            )
+            bindArrows()
+        }
+        binding.nameBtn.setOnClickListener {
+            viewModel.updateSortOrder(
+                listIdSort = viewModel.listIdSortOrder.inverse()
+            )
+            bindArrows()
+        }
+    }
+
+    private fun bindArrows() {
         binding.listIdSort.setImageResource(
             getArrowFromSortOrder(viewModel.listIdSortOrder)
         )
