@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
         }
         binding.nameBtn.setOnClickListener {
             viewModel.updateSortOrder(
-                listIdSort = viewModel.listIdSortOrder.inverse()
+                nameSort = viewModel.nameSortOrder.inverse()
             )
             bindArrows()
         }
