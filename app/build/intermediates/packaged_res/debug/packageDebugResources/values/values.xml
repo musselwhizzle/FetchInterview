@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <string name="app_name">FetchInterview</string>
+    <string name="hiring_list_id_label">id</string>
+    <string name="hiring_list_list_id_label">list id</string>
+    <string name="hiring_list_name_label">name</string>
+    <style name="Base.Theme.FetchInterview" parent="Theme.Material3.DayNight.NoActionBar">
+        
+        
+    </style>
+    <style name="Theme.FetchInterview" parent="Base.Theme.FetchInterview"/>
+</resources>

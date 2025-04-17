@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "/Users/josh/.gradle/daemon/8.11.1/dev.therapscallion.fetchinterview.app-mergeDebugResources-37:/layout/item_hiring.xml",
+        "source": "/Users/josh/.gradle/daemon/8.11.1/dev.therapscallion.fetchinterview.app-main-40:/layout/item_hiring.xml"
+    },
+    {
+        "merged": "dev.therapscallion.fetchinterview.app-mergeDebugResources-37:/layout/activity_main.xml",
+        "source": "dev.therapscallion.fetchinterview.app-main-40:/layout/activity_main.xml"
+    },
+    {
+        "merged": "/Users/josh/.gradle/daemon/8.11.1/dev.therapscallion.fetchinterview.app-mergeDebugResources-37:/layout/activity_main.xml",
+        "source": "/Users/josh/.gradle/daemon/8.11.1/dev.therapscallion.fetchinterview.app-main-40:/layout/activity_main.xml"
+    }
+]
